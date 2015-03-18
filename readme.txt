@@ -2,6 +2,7 @@ Http Connection
 ==========
 
 The asynchronous http connection for Android (JAVA)
+* HttpConnection Class & HttpConnectionHandler Interface
 
 Contents
 ==============================
