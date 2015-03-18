@@ -16,7 +16,6 @@ Contents
 * Name: Http Connection
 * Version: 1.0
 * Author: Misam Saki, http://misam.ir/
-* Document: https://github.com/misamplus/HttpConnection
 
 2. How To Use
 ==============================
