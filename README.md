@@ -17,7 +17,6 @@ Contents
 * Version: 1.0
 * Author: Misam Saki, http://misam.ir/
 * Document: https://github.com/misamplus/HttpConnection
-* <a href="#3-license">License & Copyright</a>
 
 2. How To Use
 ==============================
@@ -28,6 +27,9 @@ Contents
 ==============================
 
 Copyright © 2000 Misam Saki <hi@misam.ir>
+
 This work is free. You can redistribute it and/or modify it under the
+
 terms of the Do What The Fuck You Want To Public License, Version 2,
+
 as published by Sam Hocevar. See the COPYING file for more details.
