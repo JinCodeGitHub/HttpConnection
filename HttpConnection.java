@@ -1,8 +1,8 @@
 /**
  * The Asynchronous JAVA HTTP Connection For Android.
- * : HttpConnection Class & HttpConnectionHandler Interface
+ * * HttpConnection Class & ConnectHandler Interface
  *
- * @version 1.0
+ * @version 1.1
  * @author Misam Saki, http://misam.ir/
  * @document https://github.com/misamplus/HttpConnection
  *
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class HttpConnection extends AsyncTask<Void, Void, Void> {
 
-    private HttpConnectionHandler httpConnectionHandler;
+    private ConnectHandler connectHandler;
     private ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
     private String url;
     private String response;
@@ -39,19 +39,19 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
     private boolean fault = true;
     private String error;
 
-    public HttpConnection(String url, HttpConnectionHandler httpConnectionHandler) {
+    public HttpConnection(String url, ConnectHandler connectHandler) {
         this.url = url;
-        this.httpConnectionHandler = httpConnectionHandler;
+        this.connectHandler = connectHandler;
     }
 
-    public HttpConnection(String url, String outputCharset, HttpConnectionHandler httpConnectionHandler) {
+    public HttpConnection(String url, String outputCharset, ConnectHandler connectHandler) {
         this.url = url;
         this.responseCharset = outputCharset;
-        this.httpConnectionHandler = httpConnectionHandler;
+        this.connectHandler = connectHandler;
     }
 
-    public void setHttpConnectionHandler(HttpConnectionHandler httpConnectionHandler) {
-        this.httpConnectionHandler = httpConnectionHandler;
+    public void setHttpConnectionHandler(ConnectHandler connectHandler) {
+        this.connectHandler = connectHandler;
     }
 
     public void setUrl(String url) {
@@ -71,11 +71,17 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
         postParameters.add(new BasicNameValuePair(key, value));
     }
 
+    /**
+    * @since 1.1
+    */
+    public void connect() {
+        execute();
+    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        httpConnectionHandler.onStart();
+        connectHandler.onStart();
     }
 
     @Override
@@ -108,12 +114,12 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        if (fault) httpConnectionHandler.onFault(response, error); else httpConnectionHandler.onFinish(response);
+        if (fault) connectHandler.onFault(response, error); else connectHandler.onFinish(response);
     }
-}
 
-interface HttpConnectionHandler {
-    void onStart();
-    void onFinish(String response);
-    void onFault(String response, String error);
+    interface ConnectHandler {
+        void onStart();
+        void onFinish(String response);
+        void onFault(String response, String error);
+    }
 }

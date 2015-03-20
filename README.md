@@ -2,7 +2,7 @@ Http Connection
 ==========
 
 The Asynchronous JAVA HTTP Connection For Android.
-* HttpConnection Class & HttpConnectionHandler Interface
+* HttpConnection Class & ConnectHandler Interface
 
 Contents
 ==============================
@@ -15,7 +15,7 @@ Contents
 ==============================
 
 * Name: Http Connection
-* Version: 1.0
+* Version: 1.1
 * Author: Misam Saki, http://misam.ir/
 * Document: https://github.com/misamplus/HttpConnection
 
@@ -27,9 +27,9 @@ Contents
    <pre>
     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", ...
    </pre>
-3. Now you must add a new HttpConnectionHandler.
-  	<pre>
-     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", new HttpConnectionHandler() {
+3. Now you must add a new ConnectHandler.
+    <pre>
+     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", new HttpConnection.ConnectHandler() {
             @Override
             public void onStart() {
               // Your codes which want to run before execute connection
@@ -62,7 +62,7 @@ Contents
     </pre>
 5. Execute your connection.
     <pre>
-    httpConnection.execute();
+    httpConnection.connect();
     </pre>
 
 3. License
