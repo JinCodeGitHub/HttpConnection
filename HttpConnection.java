@@ -1,8 +1,8 @@
 /**
  * The Asynchronous JAVA HTTP Connection For Android.
- * * HttpConnection Class & ConnectHandler Interface
+ * * HttpConnection Class & OnHttpConnectionEventListener Interface
  *
- * @version 1.1
+ * @version 1.1.1
  * @author Misam Saki, http://misam.ir/
  * @document https://github.com/misamplus/HttpConnection
  *
@@ -27,31 +27,33 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class HttpConnection extends AsyncTask<Void, Void, Void> {
 
-    private ConnectHandler connectHandler;
+    private OnHttpConnectionEventListener eventListener;
     private ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
     private String url;
     private String response;
     private String responseCharset = "utf-8";
-    private boolean fault = true;
+    private boolean isFailed = true;
     private String error;
 
-    public HttpConnection(String url, ConnectHandler connectHandler) {
+    public HttpConnection(String url, OnHttpConnectionEventListener eventListener) {
         this.url = url;
-        this.connectHandler = connectHandler;
+        this.eventListener = eventListener;
     }
 
-    public HttpConnection(String url, String outputCharset, ConnectHandler connectHandler) {
+    public HttpConnection(String url, String outputCharset, OnHttpConnectionEventListener eventListener) {
         this.url = url;
         this.responseCharset = outputCharset;
-        this.connectHandler = connectHandler;
+        this.eventListener = eventListener;
     }
 
-    public void setHttpConnectionHandler(ConnectHandler connectHandler) {
-        this.connectHandler = connectHandler;
+    public void setHttpConnectionHandler(OnHttpConnectionEventListener eventListener) {
+        this.eventListener = eventListener;
     }
 
     public void setUrl(String url) {
@@ -81,7 +83,7 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        connectHandler.onStart();
+        eventListener.onStart();
     }
 
     @Override
@@ -100,12 +102,16 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
             }
             HttpEntity httpEntity = httpResponse.getEntity();
             response = EntityUtils.toString(httpEntity, responseCharset);
-            fault = false;
+            isFailed = false;
         } catch (UnsupportedEncodingException e) {
             error = e.getMessage();
         } catch (MalformedURLException e) {
             error = e.getMessage();
         } catch (IOException e) {
+            error = e.getMessage();
+        } catch (UnknownHostException e) {
+            error = e.getMessage();
+        } catch (SocketTimeoutException e) {
             error = e.getMessage();
         }
         return null;
@@ -114,12 +120,12 @@ public class HttpConnection extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        if (fault) connectHandler.onFault(response, error); else connectHandler.onFinish(response);
+        if (isFailed) eventListener.onFail(response, error); else eventListener.onFinish(response);
     }
 
-    interface ConnectHandler {
+    public interface OnHttpConnectionEventListener {
         void onStart();
         void onFinish(String response);
-        void onFault(String response, String error);
+        void onFail(String response, String error);
     }
 }
