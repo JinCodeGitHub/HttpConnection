@@ -2,7 +2,7 @@ Http Connection
 ==========
 
 The Asynchronous JAVA HTTP Connection For Android.
-* HttpConnection Class & ConnectHandler Interface
+* HttpConnection Class & OnHttpConnectionEventListener Interface
 
 Contents
 ==============================
@@ -15,7 +15,7 @@ Contents
 ==============================
 
 * Name: Http Connection
-* Version: 1.1
+* Version: 1.1.1
 * Author: Misam Saki, http://misam.ir/
 * Document: https://github.com/misamplus/HttpConnection
 
@@ -27,9 +27,9 @@ Contents
    <pre>
     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", ...
    </pre>
-3. Now you must add a new ConnectHandler.
+3. Now you must add a new OnHttpConnectionEventListener.
     <pre>
-     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", new HttpConnection.ConnectHandler() {
+     HttpConnection httpConnection = new HttpConnection("[url and get parameters]", new HttpConnection.OnHttpConnectionEventListener() {
             @Override
             public void onStart() {
               // Your codes which want to run before execute connection
@@ -42,8 +42,8 @@ Contents
             }
 
             @Override
-            public void onFault(String response, String error) {
-              // Your codes which want to run after fault connection.
+            public void onFail(String response, String error) {
+              // Your codes which want to run after fail connection.
               // You can use 'response' and 'error' strings in your codes.
             }
     });
